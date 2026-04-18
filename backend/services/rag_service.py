@@ -3,10 +3,19 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from backend import model as rag_model
-
 from backend.services.data_service import load_users
 from backend.utils.helpers import clean_user_record, format_user_to_text
+
+
+def _load_rag_model() -> Any:
+    try:
+        from backend import model as rag_model
+
+        return rag_model
+    except Exception as exc:  # noqa: BLE001
+        raise RuntimeError(
+            "RAG model initialization failed. Ensure required model dependencies and env vars are configured."
+        ) from exc
 
 
 def _parse_match_output(raw_output: Any) -> tuple[list[dict[str, Any]], Any]:
@@ -81,6 +90,8 @@ def resolve_current_user(wallet: str | None = None, name: str | None = None) -> 
 
 
 def run_match(new_user: dict[str, Any]) -> tuple[list[dict[str, Any]], Any]:
+    rag_model = _load_rag_model()
+
     users = load_users()
     if not users:
         raise ValueError("No cached users available. Call /refresh-users first.")
