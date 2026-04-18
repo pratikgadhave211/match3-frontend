@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+web3
+python-dotenv
+pydantic
+langchain-community
+langchain-huggingface
+langchain-core
+faiss-cpu
