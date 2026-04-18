@@ -3,104 +3,20 @@
     "wallet": "0x802AD3C55C4d6a91f7A4B6DDFC9374fa99e52042",
     "name": "Pratik Gadhave",
     "interests": [
-      "AI",
-      "Web3",
-      "Startups"
+      "web3+AI"
     ],
     "goals": [
-      "networking",
-      "building products"
+      "working"
     ]
   },
   {
-    "wallet": "0xA1B2C3D4E5F60718293A4B5C6D7E8F9012345678",
-    "name": "Rahul Sharma",
+    "wallet": "0xA964a8F7588C1c23091d0517bf143Be47A724102",
+    "name": "Asmit Sontakke",
     "interests": [
-      "AI",
-      "LLM",
-      "Backend"
+      "Ai"
     ],
     "goals": [
-      "collaboration",
-      "startup"
-    ]
-  },
-  {
-    "wallet": "0xB2C3D4E5F60718293A4B5C6D7E8F9012345678A1",
-    "name": "Ananya Verma",
-    "interests": [
-      "Web3",
-      "Blockchain",
-      "DeFi"
-    ],
-    "goals": [
-      "building dapps",
-      "networking"
-    ]
-  },
-  {
-    "wallet": "0xC3D4E5F60718293A4B5C6D7E8F9012345678A1B2",
-    "name": "Karan Patel",
-    "interests": [
-      "AI",
-      "Data Science",
-      "MLOps"
-    ],
-    "goals": [
-      "job opportunities",
-      "learning"
-    ]
-  },
-  {
-    "wallet": "0xD4E5F60718293A4B5C6D7E8F9012345678A1B2C3",
-    "name": "Sneha Kulkarni",
-    "interests": [
-      "Product",
-      "AI",
-      "UX"
-    ],
-    "goals": [
-      "cofounder search",
-      "networking"
-    ]
-  },
-  {
-    "wallet": "0xE5F60718293A4B5C6D7E8F9012345678A1B2C3D4",
-    "name": "Arjun Mehta",
-    "interests": [
-      "Cybersecurity",
-      "Smart Contracts",
-      "Web3"
-    ],
-    "goals": [
-      "security audits",
-      "collaboration"
-    ]
-  },
-  {
-    "wallet": "0xF60718293A4B5C6D7E8F9012345678A1B2C3D4E5",
-    "name": "Riya Singh",
-    "interests": [
-      "Frontend",
-      "React",
-      "Design Systems"
-    ],
-    "goals": [
-      "portfolio building",
-      "teaming up"
-    ]
-  },
-  {
-    "wallet": "0x0718293A4B5C6D7E8F9012345678A1B2C3D4E5F6",
-    "name": "Dev Malhotra",
-    "interests": [
-      "AI Agents",
-      "Web3",
-      "Rust"
-    ],
-    "goals": [
-      "startup",
-      "hackathon projects"
+      "Join team"
     ]
   }
 ]
