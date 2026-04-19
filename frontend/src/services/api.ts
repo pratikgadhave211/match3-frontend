@@ -64,7 +64,26 @@ async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
     });
 
     const rawText = await response.text();
-    const payload = rawText ? (JSON.parse(rawText) as T | { detail?: string }) : ({} as T);
+    const contentType = (response.headers.get("content-type") ?? "").toLowerCase();
+    const isJsonResponse = contentType.includes("application/json");
+    let payload: T | { detail?: string } | null = null;
+
+    if (rawText) {
+      if (isJsonResponse) {
+        try {
+          payload = JSON.parse(rawText) as T | { detail?: string };
+        } catch {
+          throw new Error(
+            `Invalid JSON response from API (${response.status}). Ensure VITE_API_BASE_URL points to your backend URL.`
+          );
+        }
+      } else {
+        const preview = rawText.replace(/\s+/g, " ").slice(0, 120).trim();
+        throw new Error(
+          `Non-JSON response received (${response.status}). Check VITE_API_BASE_URL (${API_BASE_URL}). Response preview: ${preview}`
+        );
+      }
+    }
 
     if (!response.ok) {
       const detail =
@@ -74,7 +93,7 @@ async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
       throw new Error(detail || `API request failed (${response.status}).`);
     }
 
-    return payload as T;
+    return (payload ?? ({} as T)) as T;
   } catch (error) {
     if (error instanceof TypeError) {
       throw new Error(`Failed to fetch. Ensure backend is running at ${API_BASE_URL} and CORS is enabled.`);
