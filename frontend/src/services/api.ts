@@ -3,7 +3,9 @@ const isLocalHost =
   typeof window !== "undefined" &&
   (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
 
-const API_BASE_URL = (envBaseUrl || (isLocalHost ? "http://127.0.0.1:8000" : "/api")).replace(/\/$/, "");
+const PROD_BACKEND_FALLBACK = "https://match3-backend-hjc0.onrender.com";
+
+const API_BASE_URL = (envBaseUrl || (isLocalHost ? "http://127.0.0.1:8000" : PROD_BACKEND_FALLBACK)).replace(/\/$/, "");
 
 export interface ApiResult<T> {
   data: T;
