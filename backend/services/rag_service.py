@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from typing import Any
 
 from backend.services.data_service import load_users
@@ -171,6 +172,15 @@ def run_match(new_user: dict[str, Any]) -> tuple[list[dict[str, Any]], Any]:
     candidate_users = [user for user in candidate_users if not _same_identity(user, cleaned_new_user)]
     if not candidate_users:
         raise ValueError("No other users available to match against.")
+
+    # Render free instances can time out during first-time model bootstrap.
+    # Allow opt-in via ENABLE_RAG_ON_RENDER=1 when runtime can handle it.
+    if os.getenv("RENDER") and os.getenv("ENABLE_RAG_ON_RENDER", "0") != "1":
+        return _fallback_match(
+            cleaned_new_user,
+            candidate_users,
+            "RAG disabled on Render runtime (set ENABLE_RAG_ON_RENDER=1 to enable).",
+        )
 
     rag_model: Any | None = None
     rag_error: str | None = None
