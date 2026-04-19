@@ -82,6 +82,43 @@ def _parse_candidate_text(text: str) -> dict[str, Any]:
     }
 
 
+def _extract_json_payload(text: str) -> Any | None:
+    if not isinstance(text, str):
+        return None
+
+    cleaned = text.strip()
+    if not cleaned:
+        return None
+
+    fenced_match = re.search(r"```(?:json)?\s*(.*?)\s*```", cleaned, re.IGNORECASE | re.DOTALL)
+    if fenced_match:
+        cleaned = fenced_match.group(1).strip()
+
+    for candidate in (cleaned,):
+        try:
+            return json.loads(candidate)
+        except json.JSONDecodeError:
+            pass
+
+    object_start = cleaned.find("{")
+    object_end = cleaned.rfind("}")
+    if object_start != -1 and object_end != -1 and object_end > object_start:
+        try:
+            return json.loads(cleaned[object_start : object_end + 1])
+        except json.JSONDecodeError:
+            pass
+
+    list_start = cleaned.find("[")
+    list_end = cleaned.rfind("]")
+    if list_start != -1 and list_end != -1 and list_end > list_start:
+        try:
+            return json.loads(cleaned[list_start : list_end + 1])
+        except json.JSONDecodeError:
+            pass
+
+    return None
+
+
 def _heuristic_rank(new_user: dict[str, Any], candidates: list[str]) -> dict[str, Any]:
     ranked: list[dict[str, Any]] = []
 
@@ -126,7 +163,7 @@ def _get_chat_model() -> Any | None:
 
     try:
         llm = HuggingFaceEndpoint(
-            repo_id="meta-llama/Llama-3.1-8B-Instruct",
+            model="meta-llama/Llama-3.1-8B-Instruct",
             task="text-generation",
             huggingfacehub_api_token=token,
         )
@@ -237,7 +274,14 @@ Return only valid JSON in this shape:
         response = model.invoke([SystemMessage(content=prompt)])
         content = response.content
         if isinstance(content, str) and content.strip():
-            return content
+            parsed = _extract_json_payload(content)
+            if isinstance(parsed, dict) and isinstance(parsed.get("matches"), list):
+                return parsed
+
+            if isinstance(parsed, list):
+                cleaned_matches = [item for item in parsed if isinstance(item, dict)]
+                if cleaned_matches:
+                    return {"matches": cleaned_matches[:3], "mode": "llm-list"}
     except Exception:  # noqa: BLE001
         return _heuristic_rank(new_user, candidates)
 
