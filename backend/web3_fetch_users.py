@@ -205,8 +205,14 @@ def fetch_blockchain_users_structured() -> List[dict[str, Any]]:
     normalized_users: List[dict[str, Any]] = []
     for user in raw_users:
         normalized = normalize_user(user)
+        wallet = ""
+        if isinstance(user, (list, tuple)) and len(user) > 0:
+            wallet = str(user[0])
+        elif isinstance(user, dict):
+            wallet = str(user.get("wallet") or "")
         normalized_users.append(
             {
+                "wallet": wallet,
                 "name": normalized["name"],
                 "interests": normalized["interests"],
                 "goals": normalized["goals"],
