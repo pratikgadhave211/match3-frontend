@@ -1,8 +1,3 @@
-.env
-.venv/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.tmp-match3-frontend-push/
-backend/
+node_modules/
+dist/
+*.tsbuildinfo
