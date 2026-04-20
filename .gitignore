@@ -5,3 +5,4 @@ __pycache__/
 *.pyo
 *.pyd
 .tmp-match3-frontend-push/
+backend/
